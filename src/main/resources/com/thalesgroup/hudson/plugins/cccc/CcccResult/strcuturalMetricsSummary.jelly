@@ -1,0 +1,71 @@
+<!--
+/*******************************************************************************
+* Copyright (c) 2009 Thales Corporate Services SAS                             *
+* Author : Gregory Boissinot                                                   *
+*                                                                              *
+* Permission is hereby granted, free of charge, to any person obtaining a copy *
+* of this software and associated documentation files (the "Software"), to deal*
+* in the Software without restriction, including without limitation the rights *
+* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell    *
+* copies of the Software, and to permit persons to whom the Software is        *
+* furnished to do so, subject to the following conditions:                     *
+*                                                                              *
+* The above copyright notice and this permission notice shall be included in   *
+* all copies or substantial portions of the Software.                          *
+*                                                                              *
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR   *
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,     *
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE  *
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER       *
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,*
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN    *
+* THE SOFTWARE.                                                                *
+*******************************************************************************/
+-->
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define"
+  xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form"
+  xmlns:i="jelly:fmt" xmlns:local="local">
+  <st:header name="Content-Type" value="text/html;charset=UTF-8" />
+  <table class="pane sortable" id="files">
+    
+    <tr>
+      <td class="pane-header" rowspan="2">Module Name</td>
+      <td class="pane-header" colspan="3">Fan-out</td>
+      <td class="pane-header" colspan="3">Fan-in</td>
+      <td class="pane-header" colspan="3">IF4</td>
+    </tr>
+    
+    <tr>
+      <td class="pane-header">vis</td>
+      <td class="pane-header">con</td>
+      <td class="pane-header">inc</td>
+      <td class="pane-header">vis</td>
+      <td class="pane-header">con</td>
+      <td class="pane-header">incl</td>
+      <td class="pane-header">vis</td>
+      <td class="pane-header">con</td>
+      <td class="pane-header">inc</td>
+    </tr>    
+    
+    
+    <tbody>
+    
+        <j:forEach var="module" items="${it.report.structuralSummaryModuleList}">    
+	        <tr>
+	          <td class="pane">${module.name}</td>
+	          <td class="pane">${module.fanOutVisible}</td>
+	          <td class="pane">${module.fanOutConcrete}</td>
+	          <td class="pane">${module.fanOut}</td>
+	          <td class="pane">${module.fanInVisible}</td>
+	          <td class="pane">${module.fanInConcrete}</td>
+	          <td class="pane">${module.fanIin}</td>
+	          <td class="pane">${module.iF4Visible}</td>
+	          <td class="pane">${module.iF4Concrete}</td>
+	          <td class="pane">${module.iF4}</td>
+	        </tr>
+		</j:forEach>
+    </tbody>
+  </table>
+
+
+</j:jelly>
