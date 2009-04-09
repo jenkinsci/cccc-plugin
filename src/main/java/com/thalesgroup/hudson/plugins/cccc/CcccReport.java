@@ -36,7 +36,7 @@ import com.thalesgroup.hudson.plugins.cccc.model.StructuralSummaryModule;
 public class CcccReport implements Serializable {
 
 	//Project Summary
-	ProjectSummary projectSummary = new ProjectSummary();
+	ProjectSummary projectSummary = null;
 	
 	//Procedural Metrics Summary	
 	List<ProceduralSummaryModule> proceduralSummaryModuleList = new ArrayList<ProceduralSummaryModule>();	

@@ -24,14 +24,12 @@
 package com.thalesgroup.hudson.plugins.cccc;
 
 import hudson.Plugin;
-import hudson.tasks.BuildStep;
+import hudson.tasks.Publisher;
 
 public class CcccPlugin extends Plugin {
 
     @Override
     public void start() throws Exception {
-        // plugins normally extend Hudson by providing custom implementations
-        // of 'extension points'. In this example, we'll add one builder.
-        BuildStep.PUBLISHERS.addRecorder(CcccPublisher.DESCRIPTOR);
+        Publisher.all().add(0,CcccPublisher.DESCRIPTOR);
     }
 }

@@ -45,6 +45,10 @@ public class CcccSummary {
     	StringBuilder builder = new StringBuilder();
         ProjectSummary summary = report.getProjectSummary();        
         
+        if (summary == null){
+        	return "";
+        }
+        
         if (previousReport!=null){
         	previous =  previousReport.projectSummary;
     	}

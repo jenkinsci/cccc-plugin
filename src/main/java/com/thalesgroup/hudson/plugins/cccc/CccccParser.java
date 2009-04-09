@@ -22,6 +22,7 @@
 *******************************************************************************/
 package com.thalesgroup.hudson.plugins.cccc;
 
+import hudson.AbortException;
 import hudson.FilePath;
 import hudson.remoting.VirtualChannel;
 
@@ -64,30 +65,38 @@ public class CccccParser implements FilePath.FileCallable<CcccReport> {
                 document = sxb.build(new InputStreamReader(new  FileInputStream(new File(resultFilePath.toURI())), "UTF-8"));
             } catch (Exception e) {
                 logger.println("Creation error = " + e.toString());
+                throw new AbortException();
             }
         } catch (Exception e) {
         	logger.println("Error = " + e.toString());
-            throw new RuntimeException(e.toString(), e);
+        	throw new AbortException();
         }
         
 		Element root = document.getRootElement();
 		
 		Element  projectSummaryElt = root.getChild("project_summary");		
-		ProjectSummary projectSummary = fillSummaryProject(projectSummaryElt);
-		ccccReport.setProjectSummary(projectSummary);
-		
+		if (projectSummaryElt!=null){
+			ProjectSummary projectSummary = fillSummaryProject(projectSummaryElt);
+			ccccReport.setProjectSummary(projectSummary);
+		}
+				
 		Element  proceduralSummaryElt = root.getChild("procedural_summary");	
-		List<ProceduralSummaryModule> proceduralSummaryModuleList = fillProceduralSummary(proceduralSummaryElt);
-		ccccReport.setProceduralSummaryModuleList(proceduralSummaryModuleList);
+		if (proceduralSummaryElt!=null){
+			List<ProceduralSummaryModule> proceduralSummaryModuleList = fillProceduralSummary(proceduralSummaryElt);
+			ccccReport.setProceduralSummaryModuleList(proceduralSummaryModuleList);
+		}
 		
 		Element  ooDesignElt = root.getChild("oo_design");	
-		List<ObjectOrientedDesignModule> ooDesignEltModuleList = fillObjectOrientedDesignModule(ooDesignElt);
-		ccccReport.setObjectOrientedDesignModuleList(ooDesignEltModuleList);
+		if (ooDesignElt!=null){
+			List<ObjectOrientedDesignModule> ooDesignEltModuleList = fillObjectOrientedDesignModule(ooDesignElt);
+			ccccReport.setObjectOrientedDesignModuleList(ooDesignEltModuleList);
+		}
 	
 		Element structuralSummaryElt = root.getChild("structural_summary");
-		List<StructuralSummaryModule> structuralSummaryModuleList = fillStructuralSummary(structuralSummaryElt);
-		ccccReport.setStructuralSummaryModuleList(structuralSummaryModuleList);
-
+		if (structuralSummaryElt!=null){
+			List<StructuralSummaryModule> structuralSummaryModuleList = fillStructuralSummary(structuralSummaryElt);
+			ccccReport.setStructuralSummaryModuleList(structuralSummaryModuleList);
+		}
 
         return ccccReport;
     }

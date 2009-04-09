@@ -25,18 +25,48 @@
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define"
   xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form"
   xmlns:i="jelly:fmt" xmlns:local="local">
-    <st:header name="Content-Type" value="text/html;charset=UTF-8" />
+     
+     <st:header name="Content-Type" value="text/html;charset=UTF-8" />
     
-    <h2>Project Summary</h2>
-    <st:include page="projectSummary.jelly" />
+      <j:choose>
+    	<h2>Project Summary</h2>
+        <j:when test="${it.report.projectSummary == null}">
+            <div>Not available</div>
+        </j:when>
+        <j:otherwise>
+    		<st:include page="projectSummary.jelly" /> 
+        </j:otherwise>
+	  </j:choose> 
+
         
-    <h2>Procedural Metrics Summary</h2>
-    <st:include page="proceduralMetricsSummary.jelly" />
+      <j:choose>
+    	<h2>Procedural Metrics Summary</h2>
+        <j:when test="${empty(it.report.proceduralSummaryModuleList)}">
+            <div>Not available</div>
+        </j:when>
+        <j:otherwise>
+    		<st:include page="proceduralMetricsSummary.jelly" />   
+        </j:otherwise>
+	  </j:choose>     
     
-    <h2>Object Oriented Design</h2>
-    <st:include page="objectOrientedDesign.jelly" />
-        
-    <h2>Structural Metrics Summary</h2>
-    <st:include page="strcuturalMetricsSummary.jelly" />    
-    
+      <j:choose>
+	    <h2>Object Oriented Design</h2>
+        <j:when test="${empty(it.report.objectOrientedDesignModuleList)}">
+            <div>Not available</div>
+        </j:when>
+        <j:otherwise>
+    		<st:include page="objectOrientedDesign.jelly" />     
+        </j:otherwise>
+	  </j:choose>    
+           
+      <j:choose>
+        <h2>Structural Metrics Summary</h2>
+        <j:when test="${empty(it.report.structuralSummaryModuleList)}">
+            <div>Not available</div>
+        </j:when>
+        <j:otherwise>
+    		<st:include page="strcuturalMetricsSummary.jelly" />        
+        </j:otherwise>
+	  </j:choose>
+	      
 </j:jelly>
