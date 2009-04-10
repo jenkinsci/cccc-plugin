@@ -25,9 +25,10 @@
 package com.thalesgroup.hudson.plugins.cccc;
 
 
-import hudson.maven.AbstractMavenProject;
+import hudson.matrix.MatrixProject;
 import hudson.model.AbstractProject;
 import hudson.model.Descriptor;
+import hudson.model.FreeStyleProject;
 import hudson.tasks.Publisher;
 
 
@@ -38,7 +39,7 @@ public class CcccDescriptor extends Descriptor<Publisher> {
     }
 
     public boolean isApplicable(Class<? extends AbstractProject> jobType) {
-        return !AbstractMavenProject.class.isAssignableFrom(jobType);
+    	return FreeStyleProject.class.isAssignableFrom(jobType) || MatrixProject.class.isAssignableFrom(jobType);
     }
 
     @Override

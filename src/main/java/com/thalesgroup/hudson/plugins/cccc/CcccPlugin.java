@@ -24,12 +24,11 @@
 package com.thalesgroup.hudson.plugins.cccc;
 
 import hudson.Plugin;
-import hudson.tasks.Publisher;
+import hudson.tasks.BuildStep;
 
 public class CcccPlugin extends Plugin {
 
     @Override
     public void start() throws Exception {
-        Publisher.all().add(0,CcccPublisher.DESCRIPTOR);
-    }
+        BuildStep.PUBLISHERS.add(CcccPublisher.DESCRIPTOR);    }
 }
