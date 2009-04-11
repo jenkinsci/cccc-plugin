@@ -22,9 +22,13 @@
 *******************************************************************************/
 package com.thalesgroup.hudson.plugins.cccc.model;
 
-public class ObjectOrientedDesignModule {
+import java.io.Serializable;
+
+public class ObjectOrientedDesignModule implements Serializable{
 
 	
+	private static final long serialVersionUID = 1L;
+
 	private String name;
 	
 	private float weightedMethodsPerClassUnity;

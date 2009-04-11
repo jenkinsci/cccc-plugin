@@ -20,26 +20,25 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN    *
 * THE SOFTWARE.                                                                *
 *******************************************************************************/
-
 package com.thalesgroup.hudson.plugins.cccc.model;
 
 import java.io.Serializable;
 
-public class ProceduralSummaryModule implements Serializable{
+public class OtherExtentsRejectedExtend implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
 	private String name;
 	
-	private int linesOfCode;
+	private String sourceReference;
 	
-	private float mcCabesCyclomaticComplexity;
+	private int sourceReferenceLine;
+	
+	private int linesOfCode;
 	
 	private int linesOfComment;
 	
-	private String linesOfCodePerLineOfComment;
-	
-	private String mcCabesCyclomaticComplexityPerLineOfComment;
+	private String mcCabesCyclomaticComplexity;
 
 	public String getName() {
 		return name;
@@ -47,6 +46,22 @@ public class ProceduralSummaryModule implements Serializable{
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getSourceReference() {
+		return sourceReference;
+	}
+
+	public void setSourceReference(String sourceReference) {
+		this.sourceReference = sourceReference;
+	}
+
+	public int getSourceReferenceLine() {
+		return sourceReferenceLine;
+	}
+
+	public void setSourceReferenceLine(int sourceReferenceLine) {
+		this.sourceReferenceLine = sourceReferenceLine;
 	}
 
 	public int getLinesOfCode() {
@@ -57,14 +72,6 @@ public class ProceduralSummaryModule implements Serializable{
 		this.linesOfCode = linesOfCode;
 	}
 
-	public float getMcCabesCyclomaticComplexity() {
-		return mcCabesCyclomaticComplexity;
-	}
-
-	public void setMcCabesCyclomaticComplexity(float mcCabesCyclomaticComplexity) {
-		this.mcCabesCyclomaticComplexity = mcCabesCyclomaticComplexity;
-	}
-
 	public int getLinesOfComment() {
 		return linesOfComment;
 	}
@@ -73,22 +80,14 @@ public class ProceduralSummaryModule implements Serializable{
 		this.linesOfComment = linesOfComment;
 	}
 
-	public String getLinesOfCodePerLineOfComment() {
-		return linesOfCodePerLineOfComment;
+	public String getMcCabesCyclomaticComplexity() {
+		return mcCabesCyclomaticComplexity;
 	}
 
-	public void setLinesOfCodePerLineOfComment(String linesOfCodePerLineOfComment) {
-		this.linesOfCodePerLineOfComment = linesOfCodePerLineOfComment;
+	public void setMcCabesCyclomaticComplexity(String mcCabesCyclomaticComplexity) {
+		this.mcCabesCyclomaticComplexity = mcCabesCyclomaticComplexity;
 	}
-
-	public String getMcCabesCyclomaticComplexityPerLineOfComment() {
-		return mcCabesCyclomaticComplexityPerLineOfComment;
-	}
-
-	public void setMcCabesCyclomaticComplexityPerLineOfComment(
-			String mcCabesCyclomaticComplexityPerLineOfComment) {
-		this.mcCabesCyclomaticComplexityPerLineOfComment = mcCabesCyclomaticComplexityPerLineOfComment;
-	}
-
+	
+	
 	
 }

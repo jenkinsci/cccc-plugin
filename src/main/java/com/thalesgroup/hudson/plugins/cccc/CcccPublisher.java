@@ -69,11 +69,12 @@ public class CcccPublisher extends Publisher implements Serializable{
 
     @Override
     public boolean perform(AbstractBuild<?,?> build, Launcher launcher, BuildListener listener){
-
-    	listener.getLogger().println("Parsing cccc results");
     	
         if(this.canContinue(build.getResult())){
-            FilePath workspace = build.getProject().getWorkspace();
+            
+        	listener.getLogger().println("Parsing cccc results");
+        	
+        	FilePath workspace = build.getProject().getWorkspace();
             PrintStream logger = listener.getLogger();
             CccccParser parser = new CccccParser(new FilePath(build.getParent().getWorkspace(), metricFilePath),  logger);
             
@@ -95,6 +96,8 @@ public class CcccPublisher extends Publisher implements Serializable{
             CcccResult result = new CcccResult(report, build);
             CcccBuildAction buildAction = new CcccBuildAction(build, result);
             build.addAction(buildAction);
+            
+            listener.getLogger().println("End Processing cccc results");
         }
         return true;
     }

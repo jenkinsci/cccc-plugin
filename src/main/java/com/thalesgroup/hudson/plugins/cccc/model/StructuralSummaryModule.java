@@ -23,9 +23,13 @@
 
 package com.thalesgroup.hudson.plugins.cccc.model;
 
-public class StructuralSummaryModule {
+import java.io.Serializable;
+
+public class StructuralSummaryModule implements Serializable{
 
 	
+	private static final long serialVersionUID = 1L;
+
 	private String name;
 	
 	private float fanOutVisible;

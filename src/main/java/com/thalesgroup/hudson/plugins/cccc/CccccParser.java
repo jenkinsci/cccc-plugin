@@ -39,6 +39,7 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 
 import com.thalesgroup.hudson.plugins.cccc.model.ObjectOrientedDesignModule;
+import com.thalesgroup.hudson.plugins.cccc.model.OtherExtentsRejectedExtend;
 import com.thalesgroup.hudson.plugins.cccc.model.ProceduralSummaryModule;
 import com.thalesgroup.hudson.plugins.cccc.model.ProjectSummary;
 import com.thalesgroup.hudson.plugins.cccc.model.StructuralSummaryModule;
@@ -61,13 +62,9 @@ public class CccccParser implements FilePath.FileCallable<CcccReport> {
         Document document = null;
         try {
             SAXBuilder sxb = new SAXBuilder();
-            try {
-                document = sxb.build(new InputStreamReader(new  FileInputStream(new File(resultFilePath.toURI())), "UTF-8"));
-            } catch (Exception e) {
-                logger.println("Creation error = " + e.toString());
-                throw new AbortException();
-            }
-        } catch (Exception e) {
+            document = sxb.build(new InputStreamReader(new  FileInputStream(new File(resultFilePath.toURI())), "UTF-8"));
+        }
+        catch (Exception e) {
         	logger.println("Error = " + e.toString());
         	throw new AbortException();
         }
@@ -76,26 +73,37 @@ public class CccccParser implements FilePath.FileCallable<CcccReport> {
 		
 		Element  projectSummaryElt = root.getChild("project_summary");		
 		if (projectSummaryElt!=null){
+			logger.println("Process Project Summary element.");
 			ProjectSummary projectSummary = fillSummaryProject(projectSummaryElt);
 			ccccReport.setProjectSummary(projectSummary);
 		}
 				
 		Element  proceduralSummaryElt = root.getChild("procedural_summary");	
 		if (proceduralSummaryElt!=null){
+			logger.println("Process Procedural Summary element.");
 			List<ProceduralSummaryModule> proceduralSummaryModuleList = fillProceduralSummary(proceduralSummaryElt);
 			ccccReport.setProceduralSummaryModuleList(proceduralSummaryModuleList);
 		}
 		
 		Element  ooDesignElt = root.getChild("oo_design");	
 		if (ooDesignElt!=null){
-			List<ObjectOrientedDesignModule> ooDesignEltModuleList = fillObjectOrientedDesignModule(ooDesignElt);
-			ccccReport.setObjectOrientedDesignModuleList(ooDesignEltModuleList);
+			logger.println("Process Object Oriented Design element.");
+			List<ObjectOrientedDesignModule> ooDesignEltList = fillObjectOrientedDesign(ooDesignElt);
+			ccccReport.setObjectOrientedDesignModuleList(ooDesignEltList);
 		}
 	
 		Element structuralSummaryElt = root.getChild("structural_summary");
 		if (structuralSummaryElt!=null){
+			logger.println("Process Structural Summary element.");
 			List<StructuralSummaryModule> structuralSummaryModuleList = fillStructuralSummary(structuralSummaryElt);
 			ccccReport.setStructuralSummaryModuleList(structuralSummaryModuleList);
+		}
+		
+		Element otherExtentsElt = root.getChild("other_extents");
+		if (otherExtentsElt!=null){
+			logger.println("Process Other Extents element.");
+			List<OtherExtentsRejectedExtend> otherExtentsRejectedExtendList = fillOtherExtentsRejectedExtend(otherExtentsElt);
+			ccccReport.setOtherExtentsRejectedExtendList(otherExtentsRejectedExtendList);
 		}
 
         return ccccReport;
@@ -103,7 +111,7 @@ public class CccccParser implements FilePath.FileCallable<CcccReport> {
     
     private String  getValue(Element rootElement, String eletLine){
 		Element lineElement =  rootElement.getChild(eletLine);
-    	return lineElement.getAttribute("value").getValue();
+		return (lineElement!=null)?lineElement.getAttribute("value").getValue():"";
     }
     
 
@@ -152,7 +160,7 @@ public class CccccParser implements FilePath.FileCallable<CcccReport> {
 	}
 
 	
-	private List<ObjectOrientedDesignModule> fillObjectOrientedDesignModule(Element ooDesignElt){
+	private List<ObjectOrientedDesignModule> fillObjectOrientedDesign(Element ooDesignElt){
 		List<ObjectOrientedDesignModule> objectOrientedDesignModuleList = new ArrayList<ObjectOrientedDesignModule>();
 		
 		List<Element> modules = ooDesignElt.getChildren("module");
@@ -191,6 +199,27 @@ public class CccccParser implements FilePath.FileCallable<CcccReport> {
 			structuralSummaryModuleList.add(structuralSummaryModule);
 		}		
 		return structuralSummaryModuleList;
+	}
+	
+	private List<OtherExtentsRejectedExtend> fillOtherExtentsRejectedExtend(Element otherExtentsRejectedExtendElt){
+		List<OtherExtentsRejectedExtend> otherExtentsRejectedExtendList = new ArrayList<OtherExtentsRejectedExtend>();
+		
+		List<Element> rejectedExtentList = otherExtentsRejectedExtendElt.getChildren("rejected_extent");
+		for (Element rejectedExtentElt:rejectedExtentList){
+			OtherExtentsRejectedExtend otherExtendsRejectedExtend = new OtherExtentsRejectedExtend();
+			otherExtendsRejectedExtend.setName(rejectedExtentElt.getChildText("name"));
+			
+			Element sourceReferenceElt =  rejectedExtentElt.getChild("source_reference");	    	
+			otherExtendsRejectedExtend.setSourceReference(sourceReferenceElt.getAttribute("file").getValue());
+			otherExtendsRejectedExtend.setSourceReferenceLine(Integer.valueOf(sourceReferenceElt.getAttribute("line").getValue()));
+			
+			otherExtendsRejectedExtend.setLinesOfCode(Integer.valueOf(getValue(rejectedExtentElt,"lines_of_code")));
+			otherExtendsRejectedExtend.setLinesOfComment(Integer.valueOf(getValue(rejectedExtentElt,"lines_of_comment")));
+			otherExtendsRejectedExtend.setMcCabesCyclomaticComplexity(getValue(rejectedExtentElt,"McCabes_cyclomatic_complexity"));
+			
+			otherExtentsRejectedExtendList.add(otherExtendsRejectedExtend);
+		}		
+		return otherExtentsRejectedExtendList;
 	}
     
 }

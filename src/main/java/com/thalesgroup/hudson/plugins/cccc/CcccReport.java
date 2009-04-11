@@ -28,12 +28,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.thalesgroup.hudson.plugins.cccc.model.ObjectOrientedDesignModule;
+import com.thalesgroup.hudson.plugins.cccc.model.OtherExtentsRejectedExtend;
 import com.thalesgroup.hudson.plugins.cccc.model.ProceduralSummaryModule;
 import com.thalesgroup.hudson.plugins.cccc.model.ProjectSummary;
 import com.thalesgroup.hudson.plugins.cccc.model.StructuralSummaryModule;
 
 
 public class CcccReport implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	//Project Summary
 	ProjectSummary projectSummary = null;
@@ -47,7 +50,10 @@ public class CcccReport implements Serializable {
 	//Structural Metrics Summary
 	List<StructuralSummaryModule> structuralSummaryModuleList = new ArrayList<StructuralSummaryModule>();
 	
-
+	//Other extents
+	List<OtherExtentsRejectedExtend> otherExtentsRejectedExtendList = new ArrayList<OtherExtentsRejectedExtend>();
+	
+		
 	public ProjectSummary getProjectSummary() {
 		return projectSummary;
 	}
@@ -82,6 +88,16 @@ public class CcccReport implements Serializable {
 			List<StructuralSummaryModule> structuralSummaryModuleList) {
 		this.structuralSummaryModuleList = structuralSummaryModuleList;
 	}
-	
+
+	public List<OtherExtentsRejectedExtend> getOtherExtentsRejectedExtendList() {
+		return otherExtentsRejectedExtendList;
+	}
+
+	public void setOtherExtentsRejectedExtendList(
+			List<OtherExtentsRejectedExtend> otherExtentsRejectedExtendList) {
+		this.otherExtentsRejectedExtendList = otherExtentsRejectedExtendList;
+	}
+
+
 
 }

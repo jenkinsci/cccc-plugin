@@ -23,9 +23,13 @@
 
 package com.thalesgroup.hudson.plugins.cccc.model;
 
-public class ProjectSummary {
+import java.io.Serializable;
 
-	
+public class ProjectSummary implements Serializable{
+
+
+	private static final long serialVersionUID = 1L;
+
 	private int nbModules;
 	
 	private int linesOfCode;

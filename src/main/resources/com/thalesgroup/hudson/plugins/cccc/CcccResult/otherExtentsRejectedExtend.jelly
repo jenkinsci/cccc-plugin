@@ -1,3 +1,4 @@
+<!--
 /*******************************************************************************
 * Copyright (c) 2009 Thales Corporate Services SAS                             *
 * Author : Gregory Boissinot                                                   *
@@ -20,75 +21,31 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN    *
 * THE SOFTWARE.                                                                *
 *******************************************************************************/
+-->
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define"
+  xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form"
+  xmlns:i="jelly:fmt" xmlns:local="local">
+  <st:header name="Content-Type" value="text/html;charset=UTF-8" />
+  <table class="pane sortable" id="othersExtents">
+    <tr>
+      <td class="pane-header" style="width:2em">Location</td>
+      <td class="pane-header" style="width:2em">Text</td>
+      <td class="pane-header" style="width:60%">LOC</td>
+      <td class="pane-header" style="width:60%">COM</td>
+      <td class="pane-header" style="width:60%">MVG</td>
+    </tr>
+    <tbody>    
+        <j:forEach var="module" items="${it.report.otherExtentsRejectedExtendList}">    
+	        <tr>
+	          <td class="pane">${module.sourceReference}:${module.sourceReferenceLine}</td>
+	          <td class="pane">${module.name}</td>	          
+	          <td class="pane">${module.linesOfCode}</td>
+	          <td class="pane">${module.linesOfComment}</td>
+	          <td class="pane">${module.mcCabesCyclomaticComplexity}</td>
+	        </tr>
+		</j:forEach>
+    </tbody>
+  </table>
 
-package com.thalesgroup.hudson.plugins.cccc.model;
 
-import java.io.Serializable;
-
-public class ProceduralSummaryModule implements Serializable{
-
-	private static final long serialVersionUID = 1L;
-
-	private String name;
-	
-	private int linesOfCode;
-	
-	private float mcCabesCyclomaticComplexity;
-	
-	private int linesOfComment;
-	
-	private String linesOfCodePerLineOfComment;
-	
-	private String mcCabesCyclomaticComplexityPerLineOfComment;
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public int getLinesOfCode() {
-		return linesOfCode;
-	}
-
-	public void setLinesOfCode(int linesOfCode) {
-		this.linesOfCode = linesOfCode;
-	}
-
-	public float getMcCabesCyclomaticComplexity() {
-		return mcCabesCyclomaticComplexity;
-	}
-
-	public void setMcCabesCyclomaticComplexity(float mcCabesCyclomaticComplexity) {
-		this.mcCabesCyclomaticComplexity = mcCabesCyclomaticComplexity;
-	}
-
-	public int getLinesOfComment() {
-		return linesOfComment;
-	}
-
-	public void setLinesOfComment(int linesOfComment) {
-		this.linesOfComment = linesOfComment;
-	}
-
-	public String getLinesOfCodePerLineOfComment() {
-		return linesOfCodePerLineOfComment;
-	}
-
-	public void setLinesOfCodePerLineOfComment(String linesOfCodePerLineOfComment) {
-		this.linesOfCodePerLineOfComment = linesOfCodePerLineOfComment;
-	}
-
-	public String getMcCabesCyclomaticComplexityPerLineOfComment() {
-		return mcCabesCyclomaticComplexityPerLineOfComment;
-	}
-
-	public void setMcCabesCyclomaticComplexityPerLineOfComment(
-			String mcCabesCyclomaticComplexityPerLineOfComment) {
-		this.mcCabesCyclomaticComplexityPerLineOfComment = mcCabesCyclomaticComplexityPerLineOfComment;
-	}
-
-	
-}
+</j:jelly>

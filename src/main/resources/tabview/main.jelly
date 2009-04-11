@@ -30,6 +30,8 @@
     
       <j:choose>
     	<h2>Project Summary</h2>
+    	<div>This table presents summary values of various measures over the body of source code submitted.</div>
+		<br/>    	    	
         <j:when test="${it.report.projectSummary == null}">
             <div>Not available</div>
         </j:when>
@@ -41,6 +43,8 @@
         
       <j:choose>
     	<h2>Procedural Metrics Summary</h2>
+    	<div>This table presents values of procedural measures summed for each module identified in the code submitted.</div>
+    	<br/> 
         <j:when test="${empty(it.report.proceduralSummaryModuleList)}">
             <div>Not available</div>
         </j:when>
@@ -51,6 +55,8 @@
     
       <j:choose>
 	    <h2>Object Oriented Design</h2>
+	    <div>Table of four of the 6 metrics proposed by Chidamber and Kemerer in their various papers on 'a metrics suite for object oriented design'.</div>
+	    <br/>
         <j:when test="${empty(it.report.objectOrientedDesignModuleList)}">
             <div>Not available</div>
         </j:when>
@@ -61,6 +67,8 @@
            
       <j:choose>
         <h2>Structural Metrics Summary</h2>
+        <div>This table presents counts of fan-in and fan-out relationships to each module identified, and a derived metric called the Henry/Kafura/Shepperd measure, which is calculated as the square of the product of the fan-in and fan-out counts. </div>
+        <br/>
         <j:when test="${empty(it.report.structuralSummaryModuleList)}">
             <div>Not available</div>
         </j:when>
@@ -68,5 +76,18 @@
     		<st:include page="strcuturalMetricsSummary.jelly" />        
         </j:otherwise>
 	  </j:choose>
+	  
+	  
+      <j:choose>
+        <h2>Other Extents</h2>
+        <div>This table presents a list of code regions which the analyser was unable to parse.</div>
+        <br/>
+        <j:when test="${empty(it.report.otherExtentsRejectedExtendList)}">
+            <div>Not available</div>
+        </j:when>
+        <j:otherwise>
+    		<st:include page="otherExtentsRejectedExtend.jelly" />        
+        </j:otherwise>
+	  </j:choose>	  
 	      
 </j:jelly>
