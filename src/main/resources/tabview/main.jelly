@@ -28,10 +28,12 @@
      
      <st:header name="Content-Type" value="text/html;charset=UTF-8" />
     
+      <div align="right"><a href="explications">Explications</a></div>
+    
       <j:choose>
     	<h2>Project Summary</h2>
     	<div>This table presents summary values of various measures over the body of source code submitted.</div>
-		<br/>    	    	
+		<br/>    	    		
         <j:when test="${it.report.projectSummary == null}">
             <div>Not available</div>
         </j:when>

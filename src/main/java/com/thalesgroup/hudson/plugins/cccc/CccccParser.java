@@ -48,9 +48,13 @@ import com.thalesgroup.hudson.plugins.cccc.model.StructuralSummaryModule;
 
 public class CccccParser implements FilePath.FileCallable<CcccReport> {
 
-    private final FilePath resultFilePath;
+    private FilePath resultFilePath;
     private PrintStream logger;
 
+    public CccccParser(){
+    	resultFilePath = null;
+    }
+    
     public CccccParser(FilePath resultFilePath, PrintStream logger){
         this.logger = logger;
         this.resultFilePath = resultFilePath;
@@ -65,8 +69,8 @@ public class CccccParser implements FilePath.FileCallable<CcccReport> {
             document = sxb.build(new InputStreamReader(new  FileInputStream(new File(resultFilePath.toURI())), "UTF-8"));
         }
         catch (Exception e) {
-        	logger.println("Error = " + e.toString());
-        	throw new AbortException();
+        	logger.println("Parsing file error :" + e.toString());
+        	throw new AbortException("Parsing file error");
         }
         
 		Element root = document.getRootElement();
@@ -220,6 +224,22 @@ public class CccccParser implements FilePath.FileCallable<CcccReport> {
 			otherExtentsRejectedExtendList.add(otherExtendsRejectedExtend);
 		}		
 		return otherExtentsRejectedExtendList;
+	}
+
+	public FilePath getResultFilePath() {
+		return resultFilePath;
+	}
+
+	public void setResultFilePath(FilePath resultFilePath) {
+		this.resultFilePath = resultFilePath;
+	}
+
+	public PrintStream getLogger() {
+		return logger;
+	}
+
+	public void setLogger(PrintStream logger) {
+		this.logger = logger;
 	}
     
 }

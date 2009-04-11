@@ -139,7 +139,10 @@ public class CcccChartBuilder {
                 catch (InvocationTargetException ite){
                 	
                 }  
-                builder.add(report.getProjectSummary().getNbModules(), "Number of module", buildLabel);               
+                if (report.getProjectSummary()==null)
+                	builder.add(0, "Number of module", buildLabel);
+                else
+                	builder.add(report.getProjectSummary().getNbModules(), "Number of module", buildLabel);
             }
             action = action.getPreviousAction();
         }while(action != null);
@@ -148,7 +151,7 @@ public class CcccChartBuilder {
     }
     
     private static CategoryDataset buildDataset2(CcccBuildAction lastAction){
-        DataSetBuilder<String, NumberOnlyBuildLabel> builder = new DataSetBuilder<String, NumberOnlyBuildLabel>();
+        DataSetBuilder<String, NumberOnlyBuildLabel> dataSetBuilder = new DataSetBuilder<String, NumberOnlyBuildLabel>();
 
         CcccBuildAction action = lastAction;
         do{
@@ -156,16 +159,21 @@ public class CcccChartBuilder {
             if(result != null){
                 CcccReport report = result.getReport();
                 NumberOnlyBuildLabel buildLabel = new NumberOnlyBuildLabel(action.getBuild());
-                builder.add(report.getProjectSummary().getLinesOfCode(), "Lines of Code", buildLabel);               
+                if (report.getProjectSummary()==null){
+                	dataSetBuilder.add(0, "Lines of Code", buildLabel);	
+                }
+                else{
+                	dataSetBuilder.add(report.getProjectSummary().getLinesOfCode(), "Lines of Code", buildLabel);
+                }
             }
             action = action.getPreviousAction();
         }while(action != null);
 
-        return builder.build();
+        return dataSetBuilder.build();
     }
     
     private static CategoryDataset buildDataset3(CcccBuildAction lastAction){
-        DataSetBuilder<String, NumberOnlyBuildLabel> builder = new DataSetBuilder<String, NumberOnlyBuildLabel>();
+        DataSetBuilder<String, NumberOnlyBuildLabel> dataSetBuilder = new DataSetBuilder<String, NumberOnlyBuildLabel>();
 
         CcccBuildAction action = lastAction;
         do{
@@ -173,12 +181,17 @@ public class CcccChartBuilder {
             if(result != null){
                 CcccReport report = result.getReport();
                 NumberOnlyBuildLabel buildLabel = new NumberOnlyBuildLabel(action.getBuild());
-                builder.add(report.getProjectSummary().getMcCabesCyclomaticComplexity(), "McCabe's Cyclomatic Number", buildLabel);               
+                if (report.getProjectSummary()==null){
+                	dataSetBuilder.add(0, "McCabe's Cyclomatic Number", buildLabel);	
+                }
+                else{
+                	dataSetBuilder.add(report.getProjectSummary().getMcCabesCyclomaticComplexity(), "McCabe's Cyclomatic Number", buildLabel);
+                }
             }
             action = action.getPreviousAction();
         }while(action != null);
 
-        return builder.build();
+        return dataSetBuilder.build();
     }    
     
 }
