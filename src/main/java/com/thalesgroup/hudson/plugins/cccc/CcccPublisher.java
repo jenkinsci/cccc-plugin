@@ -76,7 +76,7 @@ public class CcccPublisher extends Publisher implements Serializable{
         	
         	FilePath workspace = build.getProject().getWorkspace();
             PrintStream logger = listener.getLogger();
-            CccccParser parser = new CccccParser(new FilePath(build.getParent().getWorkspace(), metricFilePath),  logger);
+            CccccParser parser = new CccccParser(new FilePath(build.getParent().getWorkspace(), metricFilePath));
             
             CcccReport report;
             try{

@@ -30,9 +30,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -48,15 +49,17 @@ import com.thalesgroup.hudson.plugins.cccc.model.StructuralSummaryModule;
 
 public class CccccParser implements FilePath.FileCallable<CcccReport> {
 
-    private FilePath resultFilePath;
-    private PrintStream logger;
+	private static final long serialVersionUID = 1L;
+
+	private FilePath resultFilePath;
+    private static final Logger LOGGER = Logger.getLogger(CccccParser.class.getName());
+
 
     public CccccParser(){
     	resultFilePath = null;
     }
     
-    public CccccParser(FilePath resultFilePath, PrintStream logger){
-        this.logger = logger;
+    public CccccParser(FilePath resultFilePath){
         this.resultFilePath = resultFilePath;
     }
 
@@ -69,7 +72,7 @@ public class CccccParser implements FilePath.FileCallable<CcccReport> {
             document = sxb.build(new InputStreamReader(new  FileInputStream(new File(resultFilePath.toURI())), "UTF-8"));
         }
         catch (Exception e) {
-        	logger.println("Parsing file error :" + e.toString());
+        	LOGGER.log(Level.SEVERE,"Parsing file error :" + e.toString());
         	throw new AbortException("Parsing file error");
         }
         
@@ -77,35 +80,35 @@ public class CccccParser implements FilePath.FileCallable<CcccReport> {
 		
 		Element  projectSummaryElt = root.getChild("project_summary");		
 		if (projectSummaryElt!=null){
-			logger.println("Process Project Summary element.");
+			LOGGER.log(Level.INFO,"Process Project Summary element.");
 			ProjectSummary projectSummary = fillSummaryProject(projectSummaryElt);
 			ccccReport.setProjectSummary(projectSummary);
 		}
 				
 		Element  proceduralSummaryElt = root.getChild("procedural_summary");	
 		if (proceduralSummaryElt!=null){
-			logger.println("Process Procedural Summary element.");
+			LOGGER.log(Level.INFO,"Process Procedural Summary element.");
 			List<ProceduralSummaryModule> proceduralSummaryModuleList = fillProceduralSummary(proceduralSummaryElt);
 			ccccReport.setProceduralSummaryModuleList(proceduralSummaryModuleList);
 		}
 		
 		Element  ooDesignElt = root.getChild("oo_design");	
 		if (ooDesignElt!=null){
-			logger.println("Process Object Oriented Design element.");
+			LOGGER.log(Level.INFO,"Process Object Oriented Design element.");
 			List<ObjectOrientedDesignModule> ooDesignEltList = fillObjectOrientedDesign(ooDesignElt);
 			ccccReport.setObjectOrientedDesignModuleList(ooDesignEltList);
 		}
 	
 		Element structuralSummaryElt = root.getChild("structural_summary");
 		if (structuralSummaryElt!=null){
-			logger.println("Process Structural Summary element.");
+			LOGGER.log(Level.INFO, "Process Structural Summary element.");
 			List<StructuralSummaryModule> structuralSummaryModuleList = fillStructuralSummary(structuralSummaryElt);
 			ccccReport.setStructuralSummaryModuleList(structuralSummaryModuleList);
 		}
 		
 		Element otherExtentsElt = root.getChild("other_extents");
 		if (otherExtentsElt!=null){
-			logger.println("Process Other Extents element.");
+			LOGGER.log(Level.INFO,"Process Other Extents element.");
 			List<OtherExtentsRejectedExtend> otherExtentsRejectedExtendList = fillOtherExtentsRejectedExtend(otherExtentsElt);
 			ccccReport.setOtherExtentsRejectedExtendList(otherExtentsRejectedExtendList);
 		}
@@ -232,14 +235,6 @@ public class CccccParser implements FilePath.FileCallable<CcccReport> {
 
 	public void setResultFilePath(FilePath resultFilePath) {
 		this.resultFilePath = resultFilePath;
-	}
-
-	public PrintStream getLogger() {
-		return logger;
-	}
-
-	public void setLogger(PrintStream logger) {
-		this.logger = logger;
 	}
     
 }
