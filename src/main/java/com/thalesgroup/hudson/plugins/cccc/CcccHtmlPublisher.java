@@ -33,35 +33,36 @@ import hudson.model.Descriptor;
 import hudson.model.Result;
 import hudson.tasks.Publisher;
 
-import java.io.IOException;
-import java.io.PrintStream;
+import java.io.File;
 import java.io.Serializable;
 
 import org.kohsuke.stapler.DataBoundConstructor;
 
 
 
-public class CcccPublisher extends Publisher implements Serializable{
+public class CcccHtmlPublisher extends Publisher implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
-	public static final CcccDescriptor DESCRIPTOR = new CcccDescriptor();
-
-    private final String metricFilePath;
-   
+	public static final CcccHtmlDescriptor DESCRIPTOR = new CcccHtmlDescriptor();
+    
+    private final String metricFileHtmlPath;
+    
+    private final boolean retainAllHtml;
     
     public Descriptor<Publisher> getDescriptor() {
         return DESCRIPTOR;
     }
     
     @DataBoundConstructor
-    public CcccPublisher(String metricFilePath){
-        this.metricFilePath = metricFilePath;
+    public CcccHtmlPublisher(String metricFileHtmlPath, boolean retainAllHtml){
+        this.metricFileHtmlPath=metricFileHtmlPath;
+        this.retainAllHtml=retainAllHtml;
     }
 
     @Override
     public Action getProjectAction(AbstractProject<?,?> project){
-        return new CcccProjectAction(project);
+        return new CcccHtmlResultAction(project);
     }
 
     protected boolean canContinue(final Result result) {
@@ -73,38 +74,68 @@ public class CcccPublisher extends Publisher implements Serializable{
     	
         if(this.canContinue(build.getResult())){
             
-        	listener.getLogger().println("Parsing cccc results");
+        	listener.getLogger().println("Processing cccc Html report");
         	
-        	FilePath workspace = build.getProject().getWorkspace();
-            PrintStream logger = listener.getLogger();
-            CccccParser parser = new CccccParser(new FilePath(build.getParent().getWorkspace(), metricFilePath));
-            
-            CcccReport report;
             try{
-                report = workspace.act(parser);
             
-            }catch(IOException ioe){
-                ioe.printStackTrace(logger);
-                build.setResult(Result.FAILURE);
-                return false;
-            
-            }catch(InterruptedException ie){
-                ie.printStackTrace(logger);
-                build.setResult(Result.FAILURE);
-                return false;
-            }
+	            File fMetricFileHtmlPath= new File(metricFileHtmlPath);
+	            File fParentMetricFileHtmlPath= fMetricFileHtmlPath.getParentFile();
+	            FilePath fPathMetricFileHtmlPath = new FilePath(fParentMetricFileHtmlPath);
+	            
+				listener.getLogger().println("The determined CCCC HTML directory is '"+ fPathMetricFileHtmlPath + "'.");
+	
+				// Determine the future stored doxygen directory
+				FilePath target = new FilePath(retainAllHtml ? CcccUtil.getCcccDir(build): CcccUtil.getCcccDir(build.getProject()));
+	
+				
+				
+				
+				if (fPathMetricFileHtmlPath.copyRecursiveTo("**/*", target) == 0) {
+					if (build.getResult().isBetterOrEqualTo(Result.UNSTABLE)) {
+						// If the build failed, don't complain that there was no
+						// cccc html.
+						// The build probably didn't even get to the point where
+						// it produces html.
+					}
+	
+					listener.getLogger().println("Failure to copy the generated doxygen html documentation at '"+ fPathMetricFileHtmlPath + "' to '" + target+ "'");
+	
+					build.setResult(Result.FAILURE);
+					return true;
+				}else{
+					//rename the main HTML report into index.html
+					String fMainHtmlReport= fMetricFileHtmlPath.getName();
+					(new FilePath(target,fMainHtmlReport)).renameTo(new FilePath(target,"index.html"));
+					
+				}
+	
+				// add build action, if cccc HTML is recorded for each build
+				//build.getProject().addAction(new CcccHtmlResultAction(build.getProject(),"titi.html"));
+				if (retainAllHtml)
+					build.addAction(new CcccHtmlResultBuildAction(build));
+				
+			} catch (Exception e) {
+				e.printStackTrace(listener.fatalError("error"));
+				build.setResult(Result.FAILURE);
+				return true;
+			}
 
-            CcccResult result = new CcccResult(report, build);
-            CcccBuildAction buildAction = new CcccBuildAction(build, result);
-            build.addAction(buildAction);
- 
-            listener.getLogger().println("End Processing cccc results");
+            
+            
+            listener.getLogger().println("End Processing cccc html report");
         }
         return true;
     }
 
-	public String getMetricFilePath() {
-		return metricFilePath;
+
+	public String getMetricFileHtmlPath() {
+		return metricFileHtmlPath;
 	}
+
+	public boolean getRetainAllHtml() {
+		return retainAllHtml;
+	}
+
+
     
 }

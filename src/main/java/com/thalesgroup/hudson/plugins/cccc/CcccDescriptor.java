@@ -25,10 +25,8 @@
 package com.thalesgroup.hudson.plugins.cccc;
 
 
-import hudson.matrix.MatrixProject;
 import hudson.model.AbstractProject;
 import hudson.model.Descriptor;
-import hudson.model.FreeStyleProject;
 import hudson.tasks.Publisher;
 
 
@@ -39,11 +37,11 @@ public class CcccDescriptor extends Descriptor<Publisher> {
     }
 
     public boolean isApplicable(Class<? extends AbstractProject> jobType) {
-    	return FreeStyleProject.class.isAssignableFrom(jobType) || MatrixProject.class.isAssignableFrom(jobType);
+    	return true;
     }
 
     @Override
     public String getDisplayName() {
-        return "Publish CCCC test result report";
+        return "Publish CCCC report";
     }
 }

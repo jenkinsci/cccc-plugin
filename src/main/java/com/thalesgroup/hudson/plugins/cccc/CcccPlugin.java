@@ -30,5 +30,7 @@ public class CcccPlugin extends Plugin {
 
     @Override
     public void start() throws Exception {
-        BuildStep.PUBLISHERS.add(CcccPublisher.DESCRIPTOR);    }
+        BuildStep.PUBLISHERS.add(CcccPublisher.DESCRIPTOR);    
+        BuildStep.PUBLISHERS.add(CcccHtmlPublisher.DESCRIPTOR);
+    }
 }

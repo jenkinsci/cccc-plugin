@@ -1,4 +1,3 @@
-<!--
 /*******************************************************************************
 * Copyright (c) 2009 Thales Corporate Services SAS                             *
 * Author : Gregory Boissinot                                                   *
@@ -21,12 +20,28 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN    *
 * THE SOFTWARE.                                                                *
 *******************************************************************************/
--->
-<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define"
-	xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form" xmlns:u="/util">
 
-	<f:entry title="Main XML report file path">
-		<f:textbox name="metricFilePath" value="${instance.metricFilePath}"/>
-	</f:entry>
 
-</j:jelly>
+package com.thalesgroup.hudson.plugins.cccc;
+
+
+import hudson.model.AbstractProject;
+import hudson.model.Descriptor;
+import hudson.tasks.Publisher;
+
+
+public class CcccHtmlDescriptor extends Descriptor<Publisher> {
+
+    public CcccHtmlDescriptor(){
+        super(CcccHtmlPublisher.class);
+    }
+
+    public boolean isApplicable(Class<? extends AbstractProject> jobType) {
+    	return true;
+    }
+
+    @Override
+    public String getDisplayName() {
+        return "Publish CCCC HTML report";
+    }
+}
