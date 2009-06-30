@@ -25,15 +25,15 @@ package com.thalesgroup.hudson.plugins.cccc;
 
 import hudson.FilePath;
 import hudson.Launcher;
-import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
 import hudson.model.Action;
+import hudson.model.Build;
 import hudson.model.BuildListener;
 import hudson.model.Descriptor;
+import hudson.model.Project;
 import hudson.model.Result;
 import hudson.tasks.Publisher;
 
-import java.io.File;
 import java.io.Serializable;
 
 import org.kohsuke.stapler.DataBoundConstructor;
@@ -70,7 +70,9 @@ public class CcccHtmlPublisher extends Publisher implements Serializable{
     }
 
     @Override
-    public boolean perform(AbstractBuild<?,?> build, Launcher launcher, BuildListener listener){
+    public boolean perform(Build<?,?> build, Launcher launcher, BuildListener listener){
+    	
+    	Project proj = build.getProject();
     	
         if(this.canContinue(build.getResult())){
             
@@ -78,19 +80,25 @@ public class CcccHtmlPublisher extends Publisher implements Serializable{
         	
             try{
             
-	            File fMetricFileHtmlPath= new File(metricFileHtmlPath);
-	            File fParentMetricFileHtmlPath= fMetricFileHtmlPath.getParentFile();
-	            FilePath fPathMetricFileHtmlPath = new FilePath(fParentMetricFileHtmlPath);
+	           
+	            FilePath fMetricFileHtmlFilePath=new FilePath(proj.getModuleRoot(),metricFileHtmlPath);
+	            if (!fMetricFileHtmlFilePath.exists()){
+	            	listener.getLogger().println("The specified file '"+ fMetricFileHtmlFilePath + "' doesn't exist.");
+	            	build.setResult(Result.FAILURE);
+					return true;
+	            }	            
+	            FilePath fParentMetricFileHtmlFilePath= fMetricFileHtmlFilePath.getParent();
+
 	            
-				listener.getLogger().println("The determined CCCC HTML directory is '"+ fPathMetricFileHtmlPath + "'.");
+				listener.getLogger().println("The determined CCCC HTML directory is '"+ fParentMetricFileHtmlFilePath.toURI() + "'.");
 	
-				// Determine the future stored doxygen directory
+				// Determine the future stored cccc html directory
 				FilePath target = new FilePath(retainAllHtml ? CcccUtil.getCcccDir(build): CcccUtil.getCcccDir(build.getProject()));
 	
 				
 				
 				
-				if (fPathMetricFileHtmlPath.copyRecursiveTo("**/*", target) == 0) {
+				if (fParentMetricFileHtmlFilePath.copyRecursiveTo("**/*", target) == 0) {
 					if (build.getResult().isBetterOrEqualTo(Result.UNSTABLE)) {
 						// If the build failed, don't complain that there was no
 						// cccc html.
@@ -98,13 +106,13 @@ public class CcccHtmlPublisher extends Publisher implements Serializable{
 						// it produces html.
 					}
 	
-					listener.getLogger().println("Failure to copy the generated doxygen html documentation at '"+ fPathMetricFileHtmlPath + "' to '" + target+ "'");
+					listener.getLogger().println("Failure to copy the generated CCCC html documentation at '"+ fParentMetricFileHtmlFilePath + "' to '" + target+ "'");
 	
 					build.setResult(Result.FAILURE);
 					return true;
 				}else{
 					//rename the main HTML report into index.html
-					String fMainHtmlReport= fMetricFileHtmlPath.getName();
+					String fMainHtmlReport= fMetricFileHtmlFilePath.getName();
 					(new FilePath(target,fMainHtmlReport)).renameTo(new FilePath(target,"index.html"));
 					
 				}

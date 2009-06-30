@@ -28,7 +28,7 @@ public abstract class CcccBaseHtmlResultAction implements Action {
 		if (dir().exists())
 			return "help.gif";
 		else
-			// hide it since we don't have doxygen yet.
+			// hide it since we don't have CCCC HTML yet.
 			return null;
 	}
 

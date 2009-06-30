@@ -22,10 +22,10 @@ public class CcccHtmlResultAction extends CcccBaseHtmlResultAction implements Pr
 			AbstractProject abstractProject = (AbstractProject) project;
 			Run run = abstractProject.getLastSuccessfulBuild();
 			if (run != null) {
-				File doxygenDir = CcccUtil.getCcccDir(run);
+				File ccccDir = CcccUtil.getCcccDir(run);
 
-				if (doxygenDir.exists())
-					return doxygenDir;
+				if (ccccDir.exists())
+					return ccccDir;
 			}
 		}
 		return CcccUtil.getCcccDir(project);

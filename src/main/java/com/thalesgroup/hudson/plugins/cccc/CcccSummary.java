@@ -34,8 +34,7 @@ public class CcccSummary {
 
     public static String createReportSummary(CcccReport report, CcccReport previous){
         StringBuilder builder = new StringBuilder();
-        builder.append("<a href=\"" + CcccBuildAction.URL_NAME + "\">Cccc Results</a>");
-        builder.append(" (<a href=\"" + CcccBaseHtmlResultAction.URL_NAME + "\">Cccc HTML</a>)");              
+        builder.append("<a href=\"" + CcccBuildAction.URL_NAME + "\">Cccc Results</a>");            
         builder.append("\n");
         return builder.toString();
     }
