@@ -127,7 +127,7 @@ public class CcccChartBuilder {
                 
                 try{
                 	Class projectSummaryClass = ProjectSummary.class;
-                	Method method = projectSummaryClass.getMethod("nbNodules", null);
+                	Method method = projectSummaryClass.getMethod("nbNodules");
                 	Number n = (Number)method.invoke(report.getStructuralSummaryModuleList());
                 }
                 catch (NoSuchMethodException nsm){

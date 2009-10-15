@@ -29,9 +29,9 @@ import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
 import hudson.model.Action;
 import hudson.model.BuildListener;
-import hudson.model.Descriptor;
 import hudson.model.Result;
-import hudson.tasks.Publisher;
+import hudson.tasks.BuildStepMonitor;
+import hudson.tasks.Recorder;
 
 import java.io.IOException;
 import java.io.PrintStream;
@@ -41,18 +41,12 @@ import org.kohsuke.stapler.DataBoundConstructor;
 
 
 
-public class CcccPublisher extends Publisher implements Serializable{
+public class CcccPublisher extends Recorder implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
-	public static final CcccDescriptor DESCRIPTOR = new CcccDescriptor();
-
     private final String metricFilePath;
    
-    
-    public Descriptor<Publisher> getDescriptor() {
-        return DESCRIPTOR;
-    }
     
     @DataBoundConstructor
     public CcccPublisher(String metricFilePath){
@@ -75,9 +69,9 @@ public class CcccPublisher extends Publisher implements Serializable{
             
         	listener.getLogger().println("Parsing cccc results");
         	
-        	FilePath workspace = build.getProject().getWorkspace();
+        	FilePath workspace = build.getWorkspace();
             PrintStream logger = listener.getLogger();
-            CccccParser parser = new CccccParser(new FilePath(build.getParent().getWorkspace(), metricFilePath));
+            CccccParser parser = new CccccParser(new FilePath(build.getWorkspace(), metricFilePath));
             
             CcccReport report;
             try{
@@ -101,6 +95,10 @@ public class CcccPublisher extends Publisher implements Serializable{
             listener.getLogger().println("End Processing cccc results");
         }
         return true;
+    }
+
+    public BuildStepMonitor getRequiredMonitorService() {
+        return BuildStepMonitor.NONE;
     }
 
 	public String getMetricFilePath() {

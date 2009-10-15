@@ -25,12 +25,13 @@
 package com.thalesgroup.hudson.plugins.cccc;
 
 
+import hudson.Extension;
 import hudson.model.AbstractProject;
-import hudson.model.Descriptor;
+import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.Publisher;
 
-
-public class CcccDescriptor extends Descriptor<Publisher> {
+@Extension
+public class CcccDescriptor extends BuildStepDescriptor<Publisher> {
 
     public CcccDescriptor(){
         super(CcccPublisher.class);

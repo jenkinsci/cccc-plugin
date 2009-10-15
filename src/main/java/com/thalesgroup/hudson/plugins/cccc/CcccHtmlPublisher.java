@@ -25,14 +25,13 @@ package com.thalesgroup.hudson.plugins.cccc;
 
 import hudson.FilePath;
 import hudson.Launcher;
+import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
 import hudson.model.Action;
-import hudson.model.Build;
 import hudson.model.BuildListener;
-import hudson.model.Descriptor;
-import hudson.model.Project;
 import hudson.model.Result;
-import hudson.tasks.Publisher;
+import hudson.tasks.BuildStepMonitor;
+import hudson.tasks.Recorder;
 
 import java.io.Serializable;
 
@@ -40,19 +39,13 @@ import org.kohsuke.stapler.DataBoundConstructor;
 
 
 
-public class CcccHtmlPublisher extends Publisher implements Serializable{
+public class CcccHtmlPublisher extends Recorder implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
-	public static final CcccHtmlDescriptor DESCRIPTOR = new CcccHtmlDescriptor();
-    
     private final String metricFileHtmlPath;
     
     private final boolean retainAllHtml;
-    
-    public Descriptor<Publisher> getDescriptor() {
-        return DESCRIPTOR;
-    }
     
     @DataBoundConstructor
     public CcccHtmlPublisher(String metricFileHtmlPath, boolean retainAllHtml){
@@ -70,9 +63,7 @@ public class CcccHtmlPublisher extends Publisher implements Serializable{
     }
 
     @Override
-    public boolean perform(Build<?,?> build, Launcher launcher, BuildListener listener){
-    	
-    	Project proj = build.getProject();
+    public boolean perform(AbstractBuild<?,?> build, Launcher launcher, BuildListener listener){
     	
         if(this.canContinue(build.getResult())){
             
@@ -81,7 +72,7 @@ public class CcccHtmlPublisher extends Publisher implements Serializable{
             try{
             
 	           
-	            FilePath fMetricFileHtmlFilePath=new FilePath(proj.getModuleRoot(),metricFileHtmlPath);
+	            FilePath fMetricFileHtmlFilePath=new FilePath(build.getModuleRoot(),metricFileHtmlPath);
 	            if (!fMetricFileHtmlFilePath.exists()){
 	            	listener.getLogger().println("The specified file '"+ fMetricFileHtmlFilePath + "' doesn't exist.");
 	            	build.setResult(Result.FAILURE);
@@ -133,6 +124,10 @@ public class CcccHtmlPublisher extends Publisher implements Serializable{
             listener.getLogger().println("End Processing cccc html report");
         }
         return true;
+    }
+
+    public BuildStepMonitor getRequiredMonitorService() {
+        return BuildStepMonitor.NONE;
     }
 
 

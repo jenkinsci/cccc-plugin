@@ -32,10 +32,9 @@ public abstract class CcccBaseHtmlResultAction implements Action {
 			return null;
 	}
 
-	public void doDynamic(StaplerRequest req, StaplerResponse rsp)
+	public DirectoryBrowserSupport doDynamic(StaplerRequest req, StaplerResponse rsp)
 			throws IOException, ServletException, InterruptedException {
-		new DirectoryBrowserSupport(this, getTitle()).serveFile(req, rsp,
-				new FilePath(dir()), "help.gif", false);
+		return new DirectoryBrowserSupport(this, new FilePath(dir()), getTitle(), "help.gif", false);
 	}
 
 	protected abstract String getTitle();
