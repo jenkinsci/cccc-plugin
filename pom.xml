@@ -13,6 +13,14 @@
    <name>Hudson CCCC Plug-in</name>
    <version>0.3-SNAPSHOT</version>
    <url>http://wiki.hudson-ci.org/display/HUDSON/CCCC+Plugin</url>
+   <developers>
+      <developer>
+          <id>gbois</id>
+          <name>Gregory Boissinot</name>
+          <email>gregory.boissinot@gmail.com</email>
+          <timezone>+1</timezone>
+      </developer>
+   </developers>
 
    <dependencies>
       <dependency>
@@ -64,7 +72,5 @@
 	 <version>1.7</version> 
          <scope>test</scope>
       </dependency>
-
    </dependencies>
 </project>
-

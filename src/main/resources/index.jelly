@@ -23,5 +23,6 @@
 *******************************************************************************/
 -->
 <div>
-  This plugin parses CCCC output files to produce project and build reports.
+  This plugin parses <a href="http://cccc.sourceforge.net/">CCCC</a> output files
+  to produce project and build reports.
 </div>
