@@ -11,7 +11,7 @@
     <artifactId>cccc</artifactId>
     <packaging>hpi</packaging>
     <name>Hudson CCCC Plug-in</name>
-    <version>0.3</version>
+    <version>0.4-SNAPSHOT</version>
     <url>http://wiki.hudson-ci.org/display/HUDSON/CCCC+Plugin</url>
     <developers>
         <developer>
@@ -77,10 +77,4 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-  <scm>
-    <connection>scm:svn:https://guest@svn.dev.java.net/svn/hudson/tags/cccc-0.3</connection>
-    <developerConnection>scm:svn:https://svn.dev.java.net/svn/hudson/tags/cccc-0.3</developerConnection>
-    <url>https://hudson.dev.java.net/source/browse/hudson/tags/cccc-0.3</url>
-  </scm>
 </project>
