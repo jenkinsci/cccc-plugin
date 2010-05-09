@@ -54,10 +54,12 @@ public class CcccBuildAction implements Action, Serializable, StaplerProxy {
         return URL_NAME;
     }
 
+    @SuppressWarnings("unused")
     public String getSummary() {
         return CcccSummary.createReportSummary(result.getReport(), this.getPreviousReport());
     }
 
+    @SuppressWarnings("unused")
     public String getDetails() {
         return CcccSummary.createReportSummaryDetails(result.getReport(), this.getPreviousReport());
     }
