@@ -74,7 +74,7 @@ public class CcccPublisher extends Recorder implements Serializable {
                     build.setResult(Result.FAILURE);
                     return false;
                 }
-                CccccParser parser = new CccccParser();
+                CccccParser parser = new CccccParser(metricFile);
                 report = workspace.act(parser);
 
             } catch (IOException ioe) {
@@ -84,6 +84,10 @@ public class CcccPublisher extends Recorder implements Serializable {
 
             } catch (InterruptedException ie) {
                 ie.printStackTrace(logger);
+                build.setResult(Result.FAILURE);
+                return false;
+            } catch (Throwable t) {
+                t.printStackTrace(logger);
                 build.setResult(Result.FAILURE);
                 return false;
             }

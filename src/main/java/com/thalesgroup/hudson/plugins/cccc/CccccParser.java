@@ -23,7 +23,6 @@
 package com.thalesgroup.hudson.plugins.cccc;
 
 import com.thalesgroup.hudson.plugins.cccc.model.*;
-import hudson.AbortException;
 import hudson.FilePath;
 import hudson.remoting.VirtualChannel;
 import org.jdom.Document;
@@ -42,15 +41,9 @@ import java.util.logging.Logger;
 
 public class CccccParser implements FilePath.FileCallable<CcccReport> {
 
-    private static final long serialVersionUID = 1L;
-
-    private FilePath resultFilePath;
     private static final Logger LOGGER = Logger.getLogger(CccccParser.class.getName());
 
-
-    public CccccParser() {
-        resultFilePath = null;
-    }
+    private FilePath resultFilePath;
 
     public CccccParser(FilePath resultFilePath) {
         this.resultFilePath = resultFilePath;
@@ -58,19 +51,20 @@ public class CccccParser implements FilePath.FileCallable<CcccReport> {
 
     public CcccReport invoke(java.io.File workspace, VirtualChannel channel) throws IOException {
         CcccReport ccccReport = new CcccReport();
-
-        Document document = null;
+        Document document;
         try {
             SAXBuilder sxb = new SAXBuilder();
-            document = sxb.build(new InputStreamReader(new FileInputStream(new File(resultFilePath.toURI())), "UTF-8"));
-        }
-        catch (Exception e) {
+            FileInputStream fis = new FileInputStream(new File(resultFilePath.toURI()));
+            InputStreamReader reader = new InputStreamReader(fis, "UTF-8");
+            document = sxb.build(reader);
+            reader.close();
+            fis.close();
+        } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Parsing file error :" + e.toString());
-            throw new AbortException("Parsing file error");
+            throw new RuntimeException("Parsing file error :" + e.toString());
         }
 
         Element root = document.getRootElement();
-
         Element projectSummaryElt = root.getChild("project_summary");
         if (projectSummaryElt != null) {
             LOGGER.log(Level.INFO, "Process Project Summary element.");

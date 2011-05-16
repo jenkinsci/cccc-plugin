@@ -52,7 +52,7 @@ public class CcccChartBuilder extends Graph {
 
     protected CcccChartBuilder(CcccBuildAction action, int width, int height) {
         super(action.getBuild().getTimestamp(), width, height);
-        this.action=action;
+        this.action = action;
     }
 
 
@@ -137,14 +137,11 @@ public class CcccChartBuilder extends Graph {
                     Class projectSummaryClass = ProjectSummary.class;
                     Method method = projectSummaryClass.getMethod("nbNodules");
                     Number n = (Number) method.invoke(report.getStructuralSummaryModuleList());
-                }
-                catch (NoSuchMethodException nsm) {
+                } catch (NoSuchMethodException nsm) {
 
-                }
-                catch (IllegalAccessException nsm) {
+                } catch (IllegalAccessException nsm) {
 
-                }
-                catch (InvocationTargetException ite) {
+                } catch (InvocationTargetException ite) {
 
                 }
                 if (report.getProjectSummary() == null)
