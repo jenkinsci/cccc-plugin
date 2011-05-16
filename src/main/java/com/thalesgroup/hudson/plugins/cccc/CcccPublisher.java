@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Thales Corporate Services SAS                             *
+ * Copyright (c) 2009-2011 Thales Corporate Services SAS                        *
  * Author : Gregory Boissinot                                                   *
  *                                                                              *
  * Permission is hereby granted, free of charge, to any person obtaining a copy *
@@ -65,10 +65,16 @@ public class CcccPublisher extends Recorder implements Serializable {
 
             FilePath workspace = build.getWorkspace();
             PrintStream logger = listener.getLogger();
-            CccccParser parser = new CccccParser(new FilePath(build.getWorkspace(), metricFilePath));
 
+            FilePath metricFile = new FilePath(build.getWorkspace(), metricFilePath);
             CcccReport report;
             try {
+                if (!metricFile.exists()) {
+                    listener.getLogger().println(String.format("The given '%s' metric path doesn't exist.", metricFilePath));
+                    build.setResult(Result.FAILURE);
+                    return false;
+                }
+                CccccParser parser = new CccccParser();
                 report = workspace.act(parser);
 
             } catch (IOException ioe) {
@@ -85,7 +91,6 @@ public class CcccPublisher extends Recorder implements Serializable {
             CcccResult result = new CcccResult(report, build);
             CcccBuildAction buildAction = new CcccBuildAction(build, result);
             build.addAction(buildAction);
-
             listener.getLogger().println("End Processing cccc results");
         }
         build.setResult(Result.SUCCESS);
