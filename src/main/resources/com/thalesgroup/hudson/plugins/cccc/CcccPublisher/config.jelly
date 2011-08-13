@@ -23,10 +23,16 @@
 *******************************************************************************/
 -->
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define"
-	xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form" xmlns:u="/util">
+         xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form" xmlns:u="/util">
 
-	<f:entry title="Main XML report file path">
-		<f:textbox name="metricFilePath" value="${instance.metricFilePath}"/>
-	</f:entry>
+    <f:entry title="${%Main XML CCCC report file path}">
+        <f:textbox name="metricFilePath" value="${instance.metricFilePath}"/>
+    </f:entry>
+
+    <f:advanced>
+        <f:entry title="${%Run even if the build fails}">
+            <f:checkbox name="runOnFailedBuild" value="${instance.runOnFailedBuild}"/>
+        </f:entry>
+    </f:advanced>
 
 </j:jelly>

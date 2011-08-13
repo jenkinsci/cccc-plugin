@@ -41,10 +41,12 @@ public class CcccPublisher extends Recorder implements Serializable {
 
     private final String metricFilePath;
 
+    private final boolean runOnFailedBuild;
 
     @DataBoundConstructor
-    public CcccPublisher(String metricFilePath) {
+    public CcccPublisher(String metricFilePath, boolean runOnFailedBuild) {
         this.metricFilePath = metricFilePath;
+        this.runOnFailedBuild = runOnFailedBuild;
     }
 
     @Override
@@ -59,7 +61,7 @@ public class CcccPublisher extends Recorder implements Serializable {
     @Override
     public boolean perform(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener) {
 
-        if (this.canContinue(build.getResult())) {
+        if (this.canContinue(build.getResult()) || runOnFailedBuild) {
 
             listener.getLogger().println("Parsing cccc results");
 
