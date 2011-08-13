@@ -138,7 +138,6 @@ public class CcccSummary {
         }
         builder.append("</li>");
 
-
         return builder.toString();
     }
 

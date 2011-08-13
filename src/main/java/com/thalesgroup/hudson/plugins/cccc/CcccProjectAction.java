@@ -120,7 +120,6 @@ public class CcccProjectAction implements Action, Serializable {
 
         if (request.checkIfModified(timestamp, response)) return;
 
-
         (new CcccChartBuilder(lastAction, CHART_WIDTH, CHART_HEIGHT)).doPng(request, response);
     }
 

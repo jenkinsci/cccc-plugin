@@ -58,11 +58,16 @@ public class CcccChartBuilder extends Graph {
 
     protected JFreeChart createGraph() {
 
+        JFreeChart chart = null;
+        try {
+            chart = ChartFactory.createStackedAreaChart(null, null, "Number of modules", buildDataset(action), PlotOrientation.VERTICAL, true, false, true);
+        } catch (CCCCException e) {
+            e.printStackTrace();
+            return null;
+        }
 
-        JFreeChart chart = ChartFactory.createStackedAreaChart(null, null, "Number of modules", buildDataset(action), PlotOrientation.VERTICAL, true, false, true);
 
         chart.setBackgroundPaint(Color.white);
-
 
         CategoryPlot plot = chart.getCategoryPlot();
         plot.setBackgroundPaint(Color.WHITE);
@@ -70,7 +75,6 @@ public class CcccChartBuilder extends Graph {
         plot.setForegroundAlpha(0.8f);
         plot.setRangeGridlinesVisible(true);
         plot.setRangeGridlinePaint(Color.black);
-
 
         CategoryAxis domainAxis = new ShiftedCategoryAxis(null);
         plot.setDomainAxis(domainAxis);
@@ -90,7 +94,6 @@ public class CcccChartBuilder extends Graph {
         CcccAreaRenderer renderer = new CcccAreaRenderer(action.getUrlName());
         plot.setRenderer(firstRender);
 
-
         //Second
         NumberAxis axis2 = new NumberAxis("Lines of Code");
         axis2.setLabelPaint(Color.BLUE);
@@ -104,7 +107,6 @@ public class CcccChartBuilder extends Graph {
         CategoryItemRenderer rendu = new DefaultCategoryItemRenderer();
         rendu.setBasePaint(Color.BLUE);
         categoryPlot.setRenderer(1, rendu);
-
 
         //Third
         NumberAxis axis3 = new NumberAxis("McCabe's Cyclomatic Number");
@@ -123,7 +125,7 @@ public class CcccChartBuilder extends Graph {
         return chart;
     }
 
-    private static CategoryDataset buildDataset(CcccBuildAction lastAction) {
+    private static CategoryDataset buildDataset(CcccBuildAction lastAction) throws CCCCException {
         DataSetBuilder<String, NumberOnlyBuildLabel> builder = new DataSetBuilder<String, NumberOnlyBuildLabel>();
 
         CcccBuildAction action = lastAction;
@@ -137,12 +139,12 @@ public class CcccChartBuilder extends Graph {
                     Class projectSummaryClass = ProjectSummary.class;
                     Method method = projectSummaryClass.getMethod("nbNodules");
                     Number n = (Number) method.invoke(report.getStructuralSummaryModuleList());
-                } catch (NoSuchMethodException nsm) {
-
-                } catch (IllegalAccessException nsm) {
-
+                } catch (NoSuchMethodException nse) {
+                    throw new CCCCException(nse);
+                } catch (IllegalAccessException iae) {
+                    throw new CCCCException(iae);
                 } catch (InvocationTargetException ite) {
-
+                    throw new CCCCException(ite);
                 }
                 if (report.getProjectSummary() == null)
                     builder.add(0, "Number of module", buildLabel);

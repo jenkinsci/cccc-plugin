@@ -26,8 +26,6 @@
          xmlns:t="/lib/hudson" xmlns:f="/lib/form" xmlns:i="jelly:fmt" xmlns:local="local">
     <j:if test="${from.hasValidResults()}">
         <div align="right">
-            <p/>
-
             <div class="test-trend-caption">Cccc Trend</div>
             <div>
                 <a href="${from.urlName}/">

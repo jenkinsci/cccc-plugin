@@ -23,49 +23,49 @@
 *******************************************************************************/
 -->
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define"
-  xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form"
-  xmlns:i="jelly:fmt" xmlns:local="local">
-  <st:header name="Content-Type" value="text/html;charset=UTF-8" />
-  <table class="pane sortable" id="files">
-    
-    <tr>
-      <td class="pane-header" rowspan="2">Module Name</td>
-      <td class="pane-header" colspan="3">Fan-out</td>
-      <td class="pane-header" colspan="3">Fan-in</td>
-      <td class="pane-header" colspan="3">IF4</td>
-    </tr>
-    
-    <tr>
-      <td class="pane-header">vis</td>
-      <td class="pane-header">con</td>
-      <td class="pane-header">inc</td>
-      <td class="pane-header">vis</td>
-      <td class="pane-header">con</td>
-      <td class="pane-header">incl</td>
-      <td class="pane-header">vis</td>
-      <td class="pane-header">con</td>
-      <td class="pane-header">inc</td>
-    </tr>    
-    
-    
-    <tbody>
-    
-        <j:forEach var="module" items="${it.report.structuralSummaryModuleList}">    
-	        <tr>
-	          <td class="pane">${module.name}</td>
-	          <td class="pane">${module.fanOutVisible}</td>
-	          <td class="pane">${module.fanOutConcrete}</td>
-	          <td class="pane">${module.fanOut}</td>
-	          <td class="pane">${module.fanInVisible}</td>
-	          <td class="pane">${module.fanInConcrete}</td>
-	          <td class="pane">${module.fanIin}</td>
-	          <td class="pane">${module.iF4Visible}</td>
-	          <td class="pane">${module.iF4Concrete}</td>
-	          <td class="pane">${module.iF4}</td>
-	        </tr>
-		</j:forEach>
-    </tbody>
-  </table>
+         xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form"
+         xmlns:i="jelly:fmt" xmlns:local="local">
+    <st:header name="Content-Type" value="text/html;charset=UTF-8"/>
+    <table class="pane sortable" id="files">
+
+        <tr>
+            <td class="pane-header" rowspan="2">Module Name</td>
+            <td class="pane-header" colspan="3">Fan-out</td>
+            <td class="pane-header" colspan="3">Fan-in</td>
+            <td class="pane-header" colspan="3">IF4</td>
+        </tr>
+
+        <tr>
+            <td class="pane-header">vis</td>
+            <td class="pane-header">con</td>
+            <td class="pane-header">inc</td>
+            <td class="pane-header">vis</td>
+            <td class="pane-header">con</td>
+            <td class="pane-header">incl</td>
+            <td class="pane-header">vis</td>
+            <td class="pane-header">con</td>
+            <td class="pane-header">inc</td>
+        </tr>
+
+
+        <tbody>
+
+            <j:forEach var="module" items="${it.report.structuralSummaryModuleList}">
+                <tr>
+                    <td class="pane">${module.name}</td>
+                    <td class="pane">${module.fanOutVisible}</td>
+                    <td class="pane">${module.fanOutConcrete}</td>
+                    <td class="pane">${module.fanOut}</td>
+                    <td class="pane">${module.fanInVisible}</td>
+                    <td class="pane">${module.fanInConcrete}</td>
+                    <td class="pane">${module.fanIin}</td>
+                    <td class="pane">${module.iF4Visible}</td>
+                    <td class="pane">${module.iF4Concrete}</td>
+                    <td class="pane">${module.iF4}</td>
+                </tr>
+            </j:forEach>
+        </tbody>
+    </table>
 
 
 </j:jelly>
