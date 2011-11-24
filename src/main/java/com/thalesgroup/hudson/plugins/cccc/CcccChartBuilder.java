@@ -135,17 +135,17 @@ public class CcccChartBuilder extends Graph {
                 CcccReport report = result.getReport();
                 NumberOnlyBuildLabel buildLabel = new NumberOnlyBuildLabel(action.getBuild());
 
-                try {
-                    Class projectSummaryClass = ProjectSummary.class;
-                    Method method = projectSummaryClass.getMethod("nbNodules");
-                    Number n = (Number) method.invoke(report.getStructuralSummaryModuleList());
-                } catch (NoSuchMethodException nse) {
-                    throw new CCCCException(nse);
-                } catch (IllegalAccessException iae) {
-                    throw new CCCCException(iae);
-                } catch (InvocationTargetException ite) {
-                    throw new CCCCException(ite);
-                }
+//                try {
+//                    Class projectSummaryClass = ProjectSummary.class;
+//                    Method method = projectSummaryClass.getMethod("nbNodules");
+//                    Number n = (Number) method.invoke(report.getStructuralSummaryModuleList());
+//                } catch (NoSuchMethodException nse) {
+//                    throw new CCCCException(nse);
+//                } catch (IllegalAccessException iae) {
+//                    throw new CCCCException(iae);
+//                } catch (InvocationTargetException ite) {
+//                    throw new CCCCException(ite);
+//                }
                 if (report.getProjectSummary() == null)
                     builder.add(0, "Number of module", buildLabel);
                 else
