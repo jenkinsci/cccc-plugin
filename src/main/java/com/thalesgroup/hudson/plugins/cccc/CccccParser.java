@@ -28,6 +28,7 @@ import hudson.remoting.VirtualChannel;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
+import org.jenkinsci.remoting.RoleChecker;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -223,4 +224,8 @@ public class CccccParser implements FilePath.FileCallable<CcccReport> {
         this.resultFilePath = resultFilePath;
     }
 
+    @Override
+    public void checkRoles(RoleChecker roleChecker) throws SecurityException {
+
+    }
 }
