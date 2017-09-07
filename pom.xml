@@ -26,6 +26,9 @@
         <developer>
             <id>gjorando</id>
             <name>Guillaume Jorandon</name>
+            <email>guillaume.jorandon@cea.fr</email>
+            <organization>CEA Saclay</organization>
+            <organizationUrl>http://www.cea.fr/</organizationUrl>
             <timezone>+1</timezone>
             <roles>
                 <role>Developer</role>
