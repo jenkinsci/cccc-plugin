@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.io.Serializable;
 
+// TODO : Add a workflow step to allow the plugin to work alongside with the new Pipeline system of Jenkins ( https://github.com/jenkinsci/workflow-step-api-plugin )
 
 public class CcccPublisher extends Recorder implements Serializable {
 
