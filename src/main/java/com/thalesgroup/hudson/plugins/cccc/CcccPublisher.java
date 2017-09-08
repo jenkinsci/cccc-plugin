@@ -2,6 +2,9 @@
  * Copyright (c) 2009-2011 Thales Corporate Services SAS                        *
  * Author : Gregory Boissinot                                                   *
  *                                                                              *
+ * Copyright (c) 2017 CEA IRFU LILAS                                            *
+ * Developer : Guillaume Jorandon                                               *
+ *                                                                              *
  * Permission is hereby granted, free of charge, to any person obtaining a copy *
  * of this software and associated documentation files (the "Software"), to deal*
  * in the Software without restriction, including without limitation the rights *
@@ -116,8 +119,35 @@ public class CcccPublisher extends Recorder implements Serializable, SimpleBuild
     }
 
     @Override
-    public void perform(@Nonnull Run<?, ?> run, @Nonnull FilePath filePath, @Nonnull Launcher launcher, @Nonnull TaskListener taskListener) throws InterruptedException, IOException {
-        taskListener.getLogger().println("If it works I'll become vegan.");
-        taskListener.getLogger().println(this.metricFilePath);
+    public void perform(@Nonnull Run<?, ?> run, @Nonnull FilePath filePath, @Nonnull Launcher launcher, @Nonnull TaskListener taskListener) {
+
+        if (this.canContinue(run.getResult()) || runOnFailedBuild) {
+
+            taskListener.getLogger().println("Parsing cccc results");
+
+            PrintStream logger = taskListener.getLogger();
+
+            FilePath metricFile = new FilePath(filePath, metricFilePath);
+            CcccReport report;
+            try {
+                if (!metricFile.exists()) {
+                    taskListener.getLogger().println(String.format("The given '%s' metric path doesn't exist.", metricFilePath));
+                    run.setResult(Result.FAILURE);
+                }
+                CccccParser parser = new CccccParser(metricFile);
+                report = filePath.act(parser);
+
+            } catch (Throwable e) {
+                e.printStackTrace(logger);
+                run.setResult(Result.FAILURE);
+                return;
+            }
+
+            CcccResult result = new CcccResult(report, run);
+            CcccBuildAction buildAction = new CcccBuildAction(run, result);
+            run.addAction(buildAction);
+            taskListener.getLogger().println("End Processing cccc results");
+        }
+        run.setResult(Result.SUCCESS);
     }
 }
