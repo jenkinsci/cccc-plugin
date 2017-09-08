@@ -28,15 +28,17 @@ import hudson.Launcher;
 import hudson.model.*;
 import hudson.tasks.BuildStepMonitor;
 import hudson.tasks.Recorder;
+import jenkins.tasks.SimpleBuildStep;
 import org.kohsuke.stapler.DataBoundConstructor;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.Serializable;
 
 // TODO : Add a workflow step to allow the plugin to work alongside with the new Pipeline system of Jenkins ( https://github.com/jenkinsci/workflow-step-api-plugin )
 
-public class CcccPublisher extends Recorder implements Serializable {
+public class CcccPublisher extends Recorder implements Serializable, SimpleBuildStep {
 
     private static final long serialVersionUID = 1L;
 
@@ -113,4 +115,9 @@ public class CcccPublisher extends Recorder implements Serializable {
         return metricFilePath;
     }
 
+    @Override
+    public void perform(@Nonnull Run<?, ?> run, @Nonnull FilePath filePath, @Nonnull Launcher launcher, @Nonnull TaskListener taskListener) throws InterruptedException, IOException {
+        taskListener.getLogger().println("If it works I'll become vegan.");
+        taskListener.getLogger().println(this.metricFilePath);
+    }
 }
