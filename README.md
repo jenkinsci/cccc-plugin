@@ -8,9 +8,9 @@ This plug-in publishes CCCC results on Jenkins. This fork updates the original p
 
 Add this line to your Jenkinsfile.
 
-'''
+```
 step([$class: 'CcccPublisher', metricFilePath: '.cccc/cccc.xml', runOnFailedBuild: false])
-'''
+```
 
 Options:
 * metricFilePath: relative path to the results.
