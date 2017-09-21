@@ -150,4 +150,8 @@ public class CcccPublisher extends Recorder implements Serializable, SimpleBuild
         }
         run.setResult(Result.SUCCESS);
     }
+
+    public boolean getRunOnFailedBuild() {
+        return this.runOnFailedBuild;
+    }
 }
