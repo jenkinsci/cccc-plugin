@@ -35,11 +35,8 @@ import jenkins.tasks.SimpleBuildStep;
 import org.kohsuke.stapler.DataBoundConstructor;
 
 import javax.annotation.Nonnull;
-import java.io.IOException;
 import java.io.PrintStream;
 import java.io.Serializable;
-
-// TODO : Add a workflow step to allow the plugin to work alongside with the new Pipeline system of Jenkins ( https://github.com/jenkinsci/workflow-step-api-plugin )
 
 public class CcccPublisher extends Recorder implements Serializable, SimpleBuildStep {
 
@@ -62,51 +59,6 @@ public class CcccPublisher extends Recorder implements Serializable, SimpleBuild
 
     protected boolean canContinue(final Result result) {
         return result != Result.ABORTED && result != Result.FAILURE;
-    }
-
-    @Override
-    public boolean perform(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener) {
-
-        if (this.canContinue(build.getResult()) || runOnFailedBuild) {
-
-            listener.getLogger().println("Parsing cccc results");
-
-            FilePath workspace = build.getWorkspace();
-            PrintStream logger = listener.getLogger();
-
-            FilePath metricFile = new FilePath(build.getWorkspace(), metricFilePath);
-            CcccReport report;
-            try {
-                if (!metricFile.exists()) {
-                    listener.getLogger().println(String.format("The given '%s' metric path doesn't exist.", metricFilePath));
-                    build.setResult(Result.FAILURE);
-                    return false;
-                }
-                CccccParser parser = new CccccParser(metricFile);
-                report = workspace.act(parser);
-
-            } catch (IOException ioe) {
-                ioe.printStackTrace(logger);
-                build.setResult(Result.FAILURE);
-                return false;
-
-            } catch (InterruptedException ie) {
-                ie.printStackTrace(logger);
-                build.setResult(Result.FAILURE);
-                return false;
-            } catch (Throwable t) {
-                t.printStackTrace(logger);
-                build.setResult(Result.FAILURE);
-                return false;
-            }
-
-            CcccResult result = new CcccResult(report, build);
-            CcccBuildAction buildAction = new CcccBuildAction(build, result);
-            build.addAction(buildAction);
-            listener.getLogger().println("End Processing cccc results");
-        }
-        build.setResult(Result.SUCCESS);
-        return true;
     }
 
     public BuildStepMonitor getRequiredMonitorService() {
