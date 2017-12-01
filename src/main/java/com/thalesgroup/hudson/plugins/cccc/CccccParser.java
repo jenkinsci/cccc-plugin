@@ -25,10 +25,10 @@ package com.thalesgroup.hudson.plugins.cccc;
 import com.thalesgroup.hudson.plugins.cccc.model.*;
 import hudson.FilePath;
 import hudson.remoting.VirtualChannel;
+import jenkins.MasterToSlaveFileCallable;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
-import org.jenkinsci.remoting.RoleChecker;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,7 +40,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public class CccccParser implements FilePath.FileCallable<CcccReport> {
+public class CccccParser extends MasterToSlaveFileCallable<CcccReport> {
 
     private static final Logger LOGGER = Logger.getLogger(CccccParser.class.getName());
 
@@ -222,10 +222,5 @@ public class CccccParser implements FilePath.FileCallable<CcccReport> {
 
     public void setResultFilePath(FilePath resultFilePath) {
         this.resultFilePath = resultFilePath;
-    }
-
-    @Override
-    public void checkRoles(RoleChecker roleChecker) throws SecurityException {
-
     }
 }
