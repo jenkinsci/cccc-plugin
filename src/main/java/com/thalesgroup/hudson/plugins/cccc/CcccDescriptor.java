@@ -29,8 +29,10 @@ import hudson.Extension;
 import hudson.model.AbstractProject;
 import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.Publisher;
+import org.jenkinsci.Symbol;
 
 @Extension
+@Symbol("cccc")
 public class CcccDescriptor extends BuildStepDescriptor<Publisher> {
 
     public CcccDescriptor() {
