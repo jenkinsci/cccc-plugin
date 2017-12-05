@@ -22,7 +22,8 @@
 * THE SOFTWARE.                                                                *
 *******************************************************************************/
 -->
+<?jelly escape-by-default='true'?>
 <div>
-  This plugin parses <a href="http://cccc.sourceforge.net/">CCCC</a> output files
+  This plugin parses <a href="https://github.com/sarnold/cccc">CCCC</a> output files
   to produce project and build reports.
 </div>

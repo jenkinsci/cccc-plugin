@@ -23,8 +23,8 @@
 
 package com.thalesgroup.hudson.plugins.cccc;
 
-import hudson.model.AbstractBuild;
 import hudson.model.Action;
+import hudson.model.Run;
 import org.kohsuke.stapler.StaplerProxy;
 
 import java.io.Serializable;
@@ -34,10 +34,10 @@ public class CcccBuildAction implements Action, Serializable, StaplerProxy {
 
     public static final String URL_NAME = "ccccResult";
 
-    private AbstractBuild<?, ?> build;
+    private Run<?, ?> build;
     private CcccResult result;
 
-    public CcccBuildAction(AbstractBuild<?, ?> build, CcccResult result) {
+    public CcccBuildAction(Run<?, ?> build, CcccResult result) {
         this.build = build;
         this.result = result;
     }
@@ -88,14 +88,14 @@ public class CcccBuildAction implements Action, Serializable, StaplerProxy {
     }
 
     CcccBuildAction getPreviousAction() {
-        AbstractBuild<?, ?> previousBuild = this.build.getPreviousBuild();
+        Run<?, ?> previousBuild = this.build.getPreviousBuild();
         if (previousBuild != null) {
             return previousBuild.getAction(CcccBuildAction.class);
         }
         return null;
     }
 
-    AbstractBuild<?, ?> getBuild() {
+    Run<?, ?> getBuild() {
         return this.build;
     }
 

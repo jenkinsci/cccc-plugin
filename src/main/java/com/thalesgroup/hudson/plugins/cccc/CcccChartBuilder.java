@@ -25,6 +25,7 @@
 package com.thalesgroup.hudson.plugins.cccc;
 
 import com.thalesgroup.hudson.plugins.cccc.model.ProjectSummary;
+import hudson.model.Run;
 import hudson.util.ChartUtil.NumberOnlyBuildLabel;
 import hudson.util.DataSetBuilder;
 import hudson.util.Graph;
@@ -133,7 +134,7 @@ public class CcccChartBuilder extends Graph {
             CcccResult result = action.getResult();
             if (result != null) {
                 CcccReport report = result.getReport();
-                NumberOnlyBuildLabel buildLabel = new NumberOnlyBuildLabel(action.getBuild());
+                NumberOnlyBuildLabel buildLabel = new NumberOnlyBuildLabel((Run<?, ?>) action.getBuild());
 
 //                try {
 //                    Class projectSummaryClass = ProjectSummary.class;
@@ -165,7 +166,7 @@ public class CcccChartBuilder extends Graph {
             CcccResult result = action.getResult();
             if (result != null) {
                 CcccReport report = result.getReport();
-                NumberOnlyBuildLabel buildLabel = new NumberOnlyBuildLabel(action.getBuild());
+                NumberOnlyBuildLabel buildLabel = new NumberOnlyBuildLabel((Run<?, ?>) action.getBuild());
                 if (report.getProjectSummary() == null) {
                     dataSetBuilder.add(0, "Lines of Code", buildLabel);
                 } else {
@@ -186,7 +187,7 @@ public class CcccChartBuilder extends Graph {
             CcccResult result = action.getResult();
             if (result != null) {
                 CcccReport report = result.getReport();
-                NumberOnlyBuildLabel buildLabel = new NumberOnlyBuildLabel(action.getBuild());
+                NumberOnlyBuildLabel buildLabel = new NumberOnlyBuildLabel((Run<?, ?>) action.getBuild());
                 if (report.getProjectSummary() == null) {
                     dataSetBuilder.add(0, "McCabe's Cyclomatic Number", buildLabel);
                 } else {

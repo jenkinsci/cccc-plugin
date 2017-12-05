@@ -23,8 +23,8 @@
 
 package com.thalesgroup.hudson.plugins.cccc;
 
-import hudson.model.AbstractBuild;
 import hudson.model.ModelObject;
+import hudson.model.Run;
 
 import java.io.Serializable;
 
@@ -32,9 +32,9 @@ import java.io.Serializable;
 public class CcccResult implements Serializable {
 
     private CcccReport report;
-    private AbstractBuild owner;
+    private Run owner;
 
-    public CcccResult(CcccReport report, AbstractBuild<?, ?> owner) {
+    public CcccResult(CcccReport report, Run<?, ?> owner) {
         this.report = report;
         this.owner = owner;
     }
@@ -43,16 +43,15 @@ public class CcccResult implements Serializable {
         return report;
     }
 
-    public AbstractBuild<?, ?> getOwner() {
-        return owner;
+    public Run<?, ?> getOwner() {
+            return owner;
     }
-
 
     private static class BreadCrumbResult extends CcccResult implements ModelObject {
 
         private String displayName = null;
 
-        public BreadCrumbResult(CcccReport report, AbstractBuild<?, ?> owner, String displayName) {
+        public BreadCrumbResult(CcccReport report, Run owner, String displayName) {
             super(report, owner);
             this.displayName = displayName;
         }
